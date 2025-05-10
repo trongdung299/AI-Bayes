@@ -4,21 +4,21 @@ from model import NaiveBayes
 def train_model():
     """Huấn luyện và lưu mô hình"""
     try:
-        # Read training data with error handling
+        # Đọc dữ liệu huấn luyện với xử lý lỗi
         training_data = pd.read_csv('train_sms_vi.csv', encoding='utf-8', on_bad_lines='skip')
         
-        # Clean data: remove rows with missing values and ensure correct column names
+        # Làm sạch dữ liệu: xóa các dòng có giá trị thiếu và đảm bảo tên cột đúng
         training_data = training_data.dropna()
         training_data.columns = ['Label', 'SMS']
         
-        # Convert labels to lowercase for consistency
+        # Chuyển đổi nhãn thành chữ thường để đồng nhất
         training_data['Label'] = training_data['Label'].str.lower()
         
-        # Initialize and train the model
+        # Khởi tạo và huấn luyện mô hình
         model = NaiveBayes()
         model.train(training_data)
         
-        # Save the trained model
+        # Lưu mô hình đã huấn luyện
         model.save_model('spam_classifier.pkl')
         print("Đã huấn luyện và lưu mô hình thành công!")
         

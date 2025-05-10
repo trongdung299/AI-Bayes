@@ -16,7 +16,7 @@ def evaluate_model(model, test_data):
         y_true.append(expected)
         y_pred.append(predicted)
     
-    # Tính các metric
+    # Tính toán các chỉ số đánh giá
     precision = precision_score(y_true, y_pred, pos_label='spam')
     recall = recall_score(y_true, y_pred, pos_label='spam')
     f1 = f1_score(y_true, y_pred, pos_label='spam')
@@ -35,7 +35,7 @@ def evaluate_model(model, test_data):
     print(f"       Ham     {conf_matrix[1][0]:<8d}{conf_matrix[1][1]:<8d}")
 
 def main():
-    # Load mô hình đã huấn luyện
+    # Tải mô hình đã được huấn luyện
     try:
         model = NaiveBayes.load_model('spam_classifier.pkl')
     except FileNotFoundError:
@@ -44,14 +44,14 @@ def main():
 
     # Đọc và đánh giá trên tập test
     try:
-        # Read test data with error handling
+        # Đọc dữ liệu test với xử lý lỗi
         test_data = pd.read_csv('test_sms_vi.csv', encoding='utf-8', on_bad_lines='skip')
         
-        # Clean data: remove rows with missing values and ensure correct column names
+        # Làm sạch dữ liệu: xóa các dòng có giá trị thiếu và đảm bảo tên cột đúng
         test_data = test_data.dropna()
         test_data.columns = ['Label', 'SMS']
         
-        # Convert labels to lowercase for consistency
+        # Chuyển đổi nhãn thành chữ thường để đồng nhất
         test_data['Label'] = test_data['Label'].str.lower()
         
         evaluate_model(model, test_data)
